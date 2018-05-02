@@ -68,4 +68,3 @@ describe Subber::File::Base do
     end
   end
 end
-
