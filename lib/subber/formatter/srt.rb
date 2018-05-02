@@ -10,7 +10,7 @@ module Subber::Formatter
             convert_subtitle_to_srt_subtitle_text(subtitle)
           end
 
-        srt_subtitle_texts.join("\n\n")
+        srt_subtitle_texts.join
       end
 
       private
@@ -22,11 +22,13 @@ module Subber::Formatter
         start_time = convert_ms_time_to_srt_time(subtitle.start_time)
         end_time = convert_ms_time_to_srt_time(subtitle.end_time)
 
-        [
+        srt_subtitle_text = [
           "#{subtitle.counter}",
           "#{start_time} --> #{end_time}",
           "#{subtitle.content}",
-        ].join("\n")
+        ].join("\r\n")
+
+        "#{srt_subtitle_text}\r\n\r\n"
       end
 
       # @param ms_time [Integer] Time in milliseconds

@@ -10,7 +10,7 @@ module Subber::Formatter
             convert_subtitle_to_vtt_subtitle_text(subtitle)
           end
 
-        "WEBVTT\n\n#{vtt_subtitle_texts.join("\n\n")}"
+        "WEBVTT\r\n\r\n#{vtt_subtitle_texts.join}"
       end
 
       private
@@ -22,11 +22,13 @@ module Subber::Formatter
         start_time = convert_ms_time_to_vtt_time(subtitle.start_time)
         end_time = convert_ms_time_to_vtt_time(subtitle.end_time)
 
-        [
+        vtt_subtitle_text = [
           "#{subtitle.counter}",
           "#{start_time} --> #{end_time}",
           "#{subtitle.content}",
-        ].join("\n")
+        ].join("\r\n")
+
+        "#{vtt_subtitle_text}\r\n\r\n"
       end
 
       # @param ms_time [Integer] Time in milliseconds

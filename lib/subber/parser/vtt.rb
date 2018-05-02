@@ -15,8 +15,8 @@ module Subber::Parser
       # @return [Array<Subber::Subtitle>]
       #
       def parse(content)
-        content = remove_webvtt_header(content)
         content = remove_window_line_break(content)
+        content = remove_webvtt_header(content)
 
         subtitle_texts = content.split(DELIMITER_REGEX)
         subtitle_texts.map do |subtitle_text|
@@ -43,7 +43,7 @@ module Subber::Parser
       #
       def convert_text_to_map(subtitle_text)
         matches = subtitle_text.match(SUBTITLE_REGEX).to_a
-        raise(Subber::Errors::InvalidSrtFormat, subtitle_text) if matches.empty?
+        raise(Subber::Errors::InvalidVttFormat, subtitle_text) if matches.empty?
 
         _subtitle_text, counter, time_range_string, _new_line, content = matches
 
