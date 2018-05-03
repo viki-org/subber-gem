@@ -21,24 +21,28 @@ Or install it yourself as:
 ## Usage
 
 ```rb
-# Instantiate a Subber::Srt or Subber::Vtt object
+# Ways to instantiate a `Subber::File::Srt` or `Subber::File::Vtt`
 #
-srt = Subber::Srt.new("<local-file-path-or-remote-url>")
+srt_file = Subber::File::Srt.from_content("pass file content here")
+srt_file = Subber::File::Srt.from_path("pass local or remote file path here")
+srt_file = Subber::File::Srt.new(Array<Subber::Subtitle>)
 
 # Read the content of the file
 #
-srt.content
+srt_file.content
 
 # Get Subber::Subtitle objects
 #
-srt.subtitles
+srt_file.subtitles
 
-# Get raw exportable content
-srt.vtt_content
-
-# Convert to other file formats
+# Export to a local file
 #
-srt.to_vtt("<destination>")
+srt_file.export("pass local path here")
+
+# Convert between Srt and Vtt
+#
+vtt_file = srt_file.to_vtt
+srt_file = vtt_file.to_srt
 ```
 
 ## Development
