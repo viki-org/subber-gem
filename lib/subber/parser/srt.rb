@@ -10,32 +10,31 @@ module Subber::Parser
     BYTE_ORDER_MARK_STRING = "\xEF\xBB\xBF"
 
     class << self
-      # @param content [String]
+      # @param file_content [String]
       # @return [Array<Subber::Subtitle>]
       #
-      def parse(content)
-        content = remove_window_line_break(content)
-        subtitle_texts = content.split(DELIMITER_REGEX)
+      def parse(file_content)
+        file_content = remove_window_line_break(file_content)
 
+        subtitle_texts = file_content.split(DELIMITER_REGEX)
         subtitle_texts.map do |subtitle_text|
-          subtitle_map = convert_text_to_map(subtitle_text)
-          convert_map_to_subtitle(subtitle_map)
+          convert_text_to_subtitle(subtitle_text)
         end
       end
 
       private
 
-      # @param text [String]
+      # @param file_content [String]
       # @return [String]
       #
-      def remove_window_line_break(text)
-        text.gsub(WINDOW_LINE_BREAK_REGEX, '')
+      def remove_window_line_break(file_content)
+        file_content.gsub(WINDOW_LINE_BREAK_REGEX, '')
       end
 
       # @param subtitle_text [String]
-      # @return [Hash]
+      # @return [Subber::Subtitle]
       #
-      def convert_text_to_map(subtitle_text)
+      def convert_text_to_subtitle(subtitle_text)
         matches = subtitle_text.match(SUBTITLE_REGEX).to_a
         raise(Subber::Errors::InvalidSrtFormat, subtitle_text) if matches.empty?
 
@@ -44,33 +43,18 @@ module Subber::Parser
         counter = extract_counter(counter)
         from, to = extract_time_range(time_range_string)
 
-        {
+        Subber::Subtitle.new(
           counter: counter,
           start_time: convert_time_to_ms(from),
           end_time: convert_time_to_ms(to),
-          content: content.to_s
-        }
+          content: content
+        )
       rescue Subber::Errors::InvalidCounter
         raise(Subber::Errors::InvalidCounter, subtitle_text)
       rescue Subber::Errors::InvalidTimeRange
         raise(Subber::Errors::InvalidTimeRange, subtitle_text)
       rescue Subber::Errors::InvalidTimestamp
         raise(Subber::Errors::InvalidTimestamp, subtitle_text)
-      end
-
-      # @param [Hash] subtitle_map
-      # @param counter [String]
-      # @param start_time [String]
-      # @param end_time [String]
-      # @param content [String]
-      #
-      def convert_map_to_subtitle(subtitle_map)
-        Subber::Subtitle.new(
-          counter: subtitle_map[:counter],
-          start_time: subtitle_map[:start_time],
-          end_time: subtitle_map[:end_time],
-          content: subtitle_map[:content]
-        )
       end
 
       # @param  counter_string [String]
