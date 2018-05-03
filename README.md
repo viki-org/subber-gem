@@ -1,5 +1,7 @@
 # Subber
 
+[![Build Status](https://travis-ci.org/viki-org/subber-gem.svg?branch=master)](https://travis-ci.org/viki-org/subber-gem)
+
 This is the Subber gem from Viki. This gem helps you convert subtitles from SRT to VTT and vice versa.
 
 ## Installation
