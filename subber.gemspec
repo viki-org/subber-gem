@@ -6,8 +6,8 @@ require "subber/version"
 Gem::Specification.new do |spec|
   spec.name          = "subber"
   spec.version       = Subber::VERSION
-  spec.authors       = ["Julian Ponce"]
-  spec.email         = ["julian.ponce@viki.com"]
+  spec.authors       = ["Viki"]
+  spec.email         = ["admin@viki.com"]
 
   spec.summary       = %q{Subtitle converter}
   spec.description   = %q{Subtitle converter}
