@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Subber::Parser::Vtt do
   describe '.parse' do
-    let(:content) { read_fixture('vtt-sample.vtt') }
     let(:expected_attribute_hashes) do
       [
         {
@@ -20,12 +19,44 @@ describe Subber::Parser::Vtt do
       ]
     end
 
-    it 'generates subtitles based on the file content' do
-      subtitles = described_class.parse(content)
+    subject { described_class.parse(content) }
 
-      subtitles.each_with_index do |subtitle, index|
-        attribute_hash = expected_attribute_hashes[index]
-        expect(subtitle).to have_attributes(attribute_hash)
+    context 'with counter' do
+      let(:content) { read_fixture('vtt-sample.vtt') }
+
+      it 'generates subtitles based on the file content' do
+        subtitles = subject
+
+        subtitles.each_with_index do |subtitle, index|
+          attribute_hash = expected_attribute_hashes[index]
+          expect(subtitle).to have_attributes(attribute_hash)
+        end
+      end
+    end
+
+    context 'without counter' do
+      let(:content) { read_fixture('vtt-without-counter-sample.vtt') }
+
+      it 'generates subtitles based on the file content' do
+        subtitles = subject
+
+        subtitles.each_with_index do |subtitle, index|
+          attribute_hash = expected_attribute_hashes[index]
+          expect(subtitle).to have_attributes(attribute_hash)
+        end
+      end
+    end
+
+    context 'with different settings' do
+      let(:content) { read_fixture('vtt-with-different-settings-sample.vtt') }
+
+      it 'generates subtitles based on the file content' do
+        subtitles = subject
+
+        subtitles.each_with_index do |subtitle, index|
+          attribute_hash = expected_attribute_hashes[index]
+          expect(subtitle).to have_attributes(attribute_hash)
+        end
       end
     end
   end

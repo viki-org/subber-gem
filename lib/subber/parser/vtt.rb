@@ -1,14 +1,14 @@
 module Subber::Parser
   class Vtt < Base
-    SUBTITLE_REGEX = /([^\n]*)\n([^\n]*)(\n(.*))?/m
+    SUBTITLE_REGEX = /(\d*)\n?(^\d{0,2}:?\d{2}:\d{2}\.\d{3}\s-->\s\d{0,2}:?\d{2}:\d{2}\.\d{3}$)\n?(.*)/m
     COUNTER_REGEX = /\d+/
-    TIME_RANGE_REGEX = /(\d{2}:\d{2}:\d{2}\.\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2}\.\d{3})/
-    TIMECODE_REGEX = /(\d{2}):(\d{2}):(\d{2})\.(\d{3})/
+    TIME_RANGE_REGEX = /(^\d{0,2}:?\d{2}:\d{2}\.\d{3})\s-->\s(\d{0,2}:?\d{2}:\d{2}\.\d{3}$)/
+    TIMECODE_REGEX = /(^\d{0,2}):?(\d{2}):(\d{2})\.(\d{3})/
 
-    DELIMITER_REGEX = /\n?\n\n/
+    CUE_DELIMITER_REGEX = /\n\n/
     WINDOW_LINE_BREAK_REGEX = /\r/
-    WEBVTT_HEADER_REGEX = /WEBVTT\n\n/
     BYTE_ORDER_MARK_STRING = "\xEF\xBB\xBF"
+    INVALID_CUE_START_STRINGS = %w(WEBVTT NOTE STYLE REGION)
 
     class << self
       # @param file_content [String]
@@ -16,38 +16,36 @@ module Subber::Parser
       #
       def parse(file_content)
         file_content = remove_window_line_break(file_content)
-        file_content = remove_webvtt_header(file_content)
+        cues = extract_cues(file_content)
 
-        subtitle_texts = file_content.split(DELIMITER_REGEX)
-        subtitle_texts.map do |subtitle_text|
-          convert_text_to_subtitle(subtitle_text)
+        cues.map.with_index do |cue, index|
+          convert_cue_to_subtitle(cue, index)
         end
       end
 
       private
 
       # @param file_content [String]
-      # @return [String]
+      # @return [Array<String>]
       #
-      def remove_webvtt_header(file_content)
-        file_content.sub(WEBVTT_HEADER_REGEX, '')
+      def extract_cues(file_content)
+        cues = file_content.split(CUE_DELIMITER_REGEX)
+        cues.reject do |cue|
+          cue.start_with?(*INVALID_CUE_START_STRINGS)
+        end
       end
 
-      # @param file_content [String]
-      # @return [String]
+      # @param cue [String]
+      # @param index [Integer]
+      # @return [Array<Subber::Subtitle>]
       #
-      def remove_window_line_break(file_content)
-        file_content.gsub(WINDOW_LINE_BREAK_REGEX, '')
-      end
+      def convert_cue_to_subtitle(cue, index)
+        matches = cue.match(SUBTITLE_REGEX).to_a
+        raise(Subber::Errors::InvalidVttFormat, cue) if matches.empty?
 
-      # @param subtitle_text [String]
-      # @return [Subber::Subtitle]
-      #
-      def convert_text_to_subtitle(subtitle_text)
-        matches = subtitle_text.match(SUBTITLE_REGEX).to_a
-        raise(Subber::Errors::InvalidSrtFormat, subtitle_text) if matches.empty?
+        _cue, counter, time_range_string, content = matches
 
-        _subtitle_text, counter, time_range_string, _new_line, content = matches
+        counter = (index + 1).to_s if counter.empty?
 
         counter = extract_counter(counter)
         from, to = extract_time_range(time_range_string)
@@ -56,14 +54,21 @@ module Subber::Parser
           counter: counter,
           start_time: convert_time_to_ms(from),
           end_time: convert_time_to_ms(to),
-          content: content
+          content: content.strip
         )
       rescue Subber::Errors::InvalidCounter
-        raise(Subber::Errors::InvalidCounter, subtitle_text)
+        raise(Subber::Errors::InvalidCounter, cue)
       rescue Subber::Errors::InvalidTimeRange
-        raise(Subber::Errors::InvalidTimeRange, subtitle_text)
+        raise(Subber::Errors::InvalidTimeRange, cue)
       rescue Subber::Errors::InvalidTimestamp
-        raise(Subber::Errors::InvalidTimestamp, subtitle_text)
+        raise(Subber::Errors::InvalidTimestamp, cue)
+      end
+
+      # @param file_content [String]
+      # @return [String]
+      #
+      def remove_window_line_break(file_content)
+        file_content.gsub(WINDOW_LINE_BREAK_REGEX, '')
       end
 
       # @param  counter_string [String]
