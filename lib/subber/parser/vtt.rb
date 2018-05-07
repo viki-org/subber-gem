@@ -41,7 +41,7 @@ module Subber::Parser
       #
       def convert_cue_to_subtitle(cue, index)
         matches = cue.match(SUBTITLE_REGEX).to_a
-        raise(Subber::Errors::InvalidVttFormat, subtitle_text) if matches.empty?
+        raise(Subber::Errors::InvalidVttFormat, cue) if matches.empty?
 
         _cue, counter, time_range_string, content = matches
 

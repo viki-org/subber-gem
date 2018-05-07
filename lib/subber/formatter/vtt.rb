@@ -8,12 +8,12 @@ module Subber::Formatter
       # @return [String]
       #
       def format(subtitles)
-        subtitle_texts =
+        cues =
           subtitles.map do |subtitle|
-            convert_subtitle_to_text(subtitle)
+            convert_subtitle_to_cue(subtitle)
           end
 
-        file_content = subtitle_texts.join
+        file_content = cues.join
         file_content = add_webvtt_header(file_content)
         file_content = add_window_line_break(file_content)
         file_content
@@ -38,14 +38,14 @@ module Subber::Formatter
       # @param subtitle [Subber::Subtitle]
       # @return [String]
       #
-      def convert_subtitle_to_text(subtitle)
-        subtitle_text = [
+      def convert_subtitle_to_cue(subtitle)
+        cue = [
           build_counter(subtitle),
           build_time_range(subtitle),
           build_content(subtitle),
         ].join("\n")
 
-        "#{subtitle_text}\n\n"
+        "#{cue}\n\n"
       end
 
       # @param subtitle [Subber::Subtitle]
