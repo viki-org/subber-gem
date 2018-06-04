@@ -10,13 +10,4 @@ class Subber::Subtitle
     @end_time = attributes[:end_time]
     @content = attributes[:content]
   end
-
-  def to_hash
-    {
-      counter: counter,
-      start_time: start_time,
-      end_time: end_time,
-      content: content
-    }.delete_if { |_, v| v.nil? }
-  end
 end
