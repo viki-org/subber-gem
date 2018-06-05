@@ -11,12 +11,12 @@ class Subber::Subtitle
     @content = attributes[:content]
   end
 
-  def to_hash
+  def as_json
     {
-      counter: counter,
-      start_time: start_time,
-      end_time: end_time,
-      content: content
-    }.delete_if { |_, v| v.nil? }
+      'counter' => counter,
+      'start_time' => start_time,
+      'end_time' => end_time,
+      'content' => content
+    }
   end
 end

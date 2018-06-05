@@ -1,5 +1,5 @@
-require "bundler/setup"
-require "subber"
+require 'bundler/setup'
+require 'subber'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
