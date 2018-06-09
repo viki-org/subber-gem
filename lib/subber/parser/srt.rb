@@ -62,9 +62,9 @@ module Subber::Parser
       # @raise  [Subber::Errors::InvalidCounter]
       #
       def extract_counter(text)
-        raise(Subber::Errors::InvalidCounter) if text.match(COUNTER_REGEX).nil?
-        text.sub!(BYTE_ORDER_MARK_STRING, '')
-        text.to_i
+        counter_text = text.match(COUNTER_REGEX).to_a.first
+        raise(Subber::Errors::InvalidCounter) if counter_text.nil?
+        counter_text.to_i
       end
 
       # @param  text [String]
