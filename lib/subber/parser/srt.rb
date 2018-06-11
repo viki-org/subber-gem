@@ -1,13 +1,12 @@
 module Subber::Parser
   class Srt < Base
     SUBTITLE_REGEX = /([^\n]*)\n([^\n]*)(\n(.*))?/m
-    COUNTER_REGEX = /\d+/
+    COUNTER_REGEX = /(\d+)$/
     TIME_RANGE_REGEX = /(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2},\d{3})/
     TIMECODE_REGEX = /(\d{2}):(\d{2}):(\d{2}),(\d{3})/
 
     DELIMITER_REGEX = /\n?\n\n/
     WINDOW_LINE_BREAK_REGEX = /\r/
-    BYTE_ORDER_MARK_STRING = "\xEF\xBB\xBF"
 
     class << self
       # @param file_content [String]
@@ -62,9 +61,9 @@ module Subber::Parser
       # @raise  [Subber::Errors::InvalidCounter]
       #
       def extract_counter(text)
-        raise(Subber::Errors::InvalidCounter) if text.match(COUNTER_REGEX).nil?
-        text.sub!(BYTE_ORDER_MARK_STRING, '')
-        text.to_i
+        counter_text = text.match(COUNTER_REGEX).to_a.last
+        raise(Subber::Errors::InvalidCounter) if counter_text.nil?
+        counter_text.to_i
       end
 
       # @param  text [String]
