@@ -34,7 +34,7 @@ describe Subber::File::Base do
     end
   end
 
-  let(:subtitles) { [ double('Subber::Subtitle') ] }
+  let(:subtitles) { [double('Subber::Subtitle')] }
   let(:file) { described_class.new(subtitles: subtitles) }
 
   describe '#content' do
@@ -65,6 +65,39 @@ describe Subber::File::Base do
     it 'exports the content of the file' do
       expect(File).to receive(:write).with(path, content)
       subject
+    end
+  end
+
+  describe '#shifted' do
+    let(:shift_amount) { 3000 }
+    let(:shifted_subtitle) { double('shifted_subtitle') }
+    subject { file.shifted(shift_amount) }
+
+    before do
+      subtitles.each do |subtitle|
+        allow(subtitle)
+          .to receive(:shifted)
+          .with(shift_amount)
+          .and_return(shifted_subtitle)
+      end
+    end
+
+    it 'does not change the original file' do
+      expect { subject }.not_to(change { file })
+    end
+
+    it 'calls shift on each subtitles' do
+      subject
+
+      subtitles.each do |subtitle|
+        expect(subtitle)
+          .to have_received(:shifted)
+          .with(shift_amount)
+      end
+    end
+
+    it 'returns a new base with shifted subtitles' do
+      expect(subject.subtitles).to match_array([shifted_subtitle])
     end
   end
 end

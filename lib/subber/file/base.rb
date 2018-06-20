@@ -56,6 +56,14 @@ module Subber::File
       File.write(path, content)
     end
 
+    # @param miliseconds [Integer] Can be both positive and negative
+    # @return [Subber::File::Base] return a copy with shifted subtitles
+    #
+    def shifted(miliseconds)
+      new_subtitles = subtitles.map { |subtitle| subtitle.shifted(miliseconds) }
+      self.class.new(subtitles: new_subtitles)
+    end
+
     private
 
     def formatter

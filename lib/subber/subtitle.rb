@@ -19,4 +19,16 @@ class Subber::Subtitle
       'content' => content
     }
   end
+
+  # @param miliseconds [Integer] Can be both positive and negative
+  # @return [Subber::Subtitle] return a copy with shifted subtitle
+  #
+  def shifted(miliseconds)
+    self.class.new(
+      counter: counter,
+      start_time: start_time + miliseconds,
+      end_time: end_time + miliseconds,
+      content: content
+    )
+  end
 end
