@@ -56,6 +56,21 @@ module Subber::File
       File.write(path, content)
     end
 
+    # @param ms [Integer] Can be both positive and negative
+    # @return [Subber::File::Base] return a new copy with shifted subtitles
+    #
+    def shift(ms)
+      new_subtitles = subtitles.map { |subtitle| subtitle.shift(ms) }
+      self.class.new(subtitles: new_subtitles)
+    end
+
+    # @param ms [Integer] Can be both positive and negative
+    # mutates the current file's subtitles
+    #
+    def shift!(ms)
+      subtitles.each { |subtitle| subtitle.shift!(ms) }
+    end
+
     private
 
     def formatter
