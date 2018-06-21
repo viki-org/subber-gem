@@ -68,15 +68,16 @@ describe Subber::File::Base do
     end
   end
 
-  describe '#shifted' do
+  describe '#shift' do
     let(:shift_amount) { 3000 }
     let(:shifted_subtitle) { double('shifted_subtitle') }
-    subject { file.shifted(shift_amount) }
+
+    subject { file.shift(shift_amount) }
 
     before do
       subtitles.each do |subtitle|
         allow(subtitle)
-          .to receive(:shifted)
+          .to receive(:shift)
           .with(shift_amount)
           .and_return(shifted_subtitle)
       end
@@ -91,13 +92,27 @@ describe Subber::File::Base do
 
       subtitles.each do |subtitle|
         expect(subtitle)
-          .to have_received(:shifted)
+          .to have_received(:shift)
           .with(shift_amount)
       end
     end
 
     it 'returns a new base with shifted subtitles' do
       expect(subject.subtitles).to match_array([shifted_subtitle])
+    end
+  end
+
+  describe '#shift!' do
+    let(:shift_amount) { 1500 }
+
+    subject { file.shift!(shift_amount) }
+
+    it 'shifts its own subtitle' do
+      subtitles.each do |subtitle|
+        expect(subtitle).to receive(:shift!).with(shift_amount)
+      end
+
+      subject
     end
   end
 end

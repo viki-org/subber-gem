@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Subber::Subtitle do
   let(:attributes) { raise NotImplementedError }
   let(:subtitle) { described_class.new(attributes) }
@@ -26,17 +28,17 @@ describe Subber::Subtitle do
     end
   end
 
-  describe '#shifted' do
+  describe '#shift' do
     let(:attributes) do
       {
         counter: 1,
         start_time: 2000,
         end_time: 5000,
-        content: 'another content'
+        content: 'some content'
       }
     end
     let(:shift_amount) { 3000 }
-    subject { subtitle.shifted(shift_amount) }
+    subject { subtitle.shift(shift_amount) }
 
     it 'does not change the original subtitle' do
       expect { subject }.not_to(change { subtitle })
@@ -44,11 +46,29 @@ describe Subber::Subtitle do
 
     it 'returns a subtitle with shifted' do
       expect(subject).to have_attributes(
-        counter: subtitle.counter,
-        start_time: subtitle.start_time + shift_amount,
-        end_time: subtitle.end_time + shift_amount,
-        content: subtitle.content
+        counter: 1,
+        start_time: 5000,
+        end_time: 8000,
+        content: 'some content'
       )
     end
+  end
+
+  describe '#shift!' do
+    let(:attributes) do
+      {
+        counter: 1,
+        start_time: 1000,
+        end_time: 6000,
+        content: 'another content'
+      }
+    end
+    let(:shift_amount) { 1500 }
+    subject { subtitle.shift!(shift_amount) }
+
+    it { is_expected_block.not_to change(subtitle, :counter) }
+    it { is_expected_block.to change(subtitle, :start_time).by(shift_amount) }
+    it { is_expected_block.to change(subtitle, :end_time).by(shift_amount) }
+    it { is_expected_block.not_to change(subtitle, :content) }
   end
 end
