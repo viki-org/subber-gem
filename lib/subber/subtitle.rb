@@ -33,6 +33,7 @@ class Subber::Subtitle
   end
 
   # @param miliseconds [Integer] Can be both positive and negative
+  # mutates the current subtitle's start and end time by ms
   #
   def shift!(ms)
     @start_time += ms

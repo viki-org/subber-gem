@@ -64,6 +64,9 @@ module Subber::File
       self.class.new(subtitles: new_subtitles)
     end
 
+    # @param ms [Integer] Can be both positive and negative
+    # mutates the current file's subtitles
+    #
     def shift!(ms)
       subtitles.each { |subtitle| subtitle.shift!(ms) }
     end
