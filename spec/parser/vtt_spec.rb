@@ -21,6 +21,14 @@ describe Subber::Parser::Vtt do
 
     subject { described_class.parse(content) }
 
+    context 'invalid content' do
+      let(:content) { read_fixture('vtt-sample-invalid.vtt') }
+
+      it 'raises error' do
+        expect { subject }.to raise_error(Subber::Errors::InvalidVttFormat)
+      end
+    end
+
     context 'with counter' do
       let(:content) { read_fixture('vtt-sample.vtt') }
 
