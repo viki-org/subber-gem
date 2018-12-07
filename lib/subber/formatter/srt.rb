@@ -69,7 +69,14 @@ module Subber::Formatter
       #
       def convert_ms_to_time(ms_time)
         seconds = ms_time / 1000.0
-        Time.at(seconds).utc.strftime("%H:%M:%S,%L")
+        formatted_seconds_str = Time.at(seconds).utc.strftime("%H:%M:%S")
+
+        # fix float precision
+        #
+        ms = ms_time % 1000
+        formatted_ms_str = ms.to_s.rjust(3, '0')
+
+        "#{formatted_seconds_str},#{formatted_ms_str}"
       end
     end
   end
