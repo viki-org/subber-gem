@@ -28,10 +28,10 @@ module Subber::Parser
         # Move validation to model level
         #
         Subber::Subtitle.new(
-          counter: parse_counter(subtitle_hash[:counter]),
-          start_time: parse_timestamp(subtitle_hash[:start_time]),
-          end_time: parse_timestamp(subtitle_hash[:end_time]),
-          content: parse_content(subtitle_hash[:content])
+          counter: parse_counter(subtitle_options[:counter]),
+          start_time: parse_timestamp(subtitle_options[:start_time]),
+          end_time: parse_timestamp(subtitle_options[:end_time]),
+          content: parse_content(subtitle_options[:content])
         )
       end
 
