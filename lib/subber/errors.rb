@@ -1,7 +1,15 @@
-class Subber::Errors
-  class InvalidVttFormat < RuntimeError; end
-  class InvalidSrtFormat < RuntimeError; end
-  class InvalidCounter < RuntimeError; end
-  class InvalidTimeRange < RuntimeError; end
-  class InvalidTimestamp < RuntimeError; end
+module Subber::Errors
+  class Base < RuntimeError; end
+
+  class InvalidContent < Base; end
+
+  class InvalidVttFormat < InvalidContent; end
+  class InvalidSrtFormat < InvalidContent; end
+  class InvalidJsonFormat < InvalidContent; end
+
+  class InvalidCounter < InvalidContent; end
+  class InvalidTimeRange < InvalidContent; end
+  class InvalidTimestamp < InvalidContent; end
+
+  class NotSupported < Base; end
 end

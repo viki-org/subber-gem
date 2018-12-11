@@ -71,6 +71,38 @@ module Subber::File
       subtitles.each { |subtitle| subtitle.shift!(ms) }
     end
 
+    def to_file_type(file_type)
+      case file_type
+      when 'srt'
+        to_srt
+      when 'json'
+        to_json
+      when 'vtt'
+        to_vtt
+      else
+        message = "#{file_type} is not a supported file type"
+        raise(Subber::Errors::NotSupported, message)
+      end
+    end
+
+    # @return [Subber::File::Json]
+    #
+    def to_json
+      Subber::File::Json.new(subtitles: subtitles)
+    end
+
+    # @return [Subber::File::Srt]
+    #
+    def to_srt
+      Subber::File::Srt.new(subtitles: subtitles)
+    end
+
+    # @return [Subber::File::Vtt]
+    #
+    def to_vtt
+      Subber::File::Vtt.new(subtitles: subtitles)
+    end
+
     private
 
     def formatter
