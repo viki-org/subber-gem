@@ -19,6 +19,7 @@ require 'subber/parser/vtt'
 require 'subber/file/base'
 require 'subber/file/srt'
 require 'subber/file/vtt'
+require 'subber/file'
 
 module Subber
 end
