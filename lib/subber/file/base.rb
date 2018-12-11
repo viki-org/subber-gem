@@ -71,7 +71,7 @@ module Subber::File
       subtitles.each { |subtitle| subtitle.shift!(ms) }
     end
 
-    def convert_to_other_type(file_type)
+    def to_file_type(file_type)
       case file_type
       when 'srt'
         to_srt

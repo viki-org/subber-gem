@@ -5,7 +5,8 @@ module Subber::Formatter
       # @return [String]
       #
       def format(subtitles)
-        subtitles.map(&:as_json).to_json
+        subtitle_hashes = subtitles.map(&:as_json)
+        JSON.generate(subtitle_hashes)
       end
     end
   end

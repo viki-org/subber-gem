@@ -1,4 +1,4 @@
-class Subber::Errors
+module Subber::Errors
   class Base < RuntimeError; end
 
   class InvalidContent < Base; end

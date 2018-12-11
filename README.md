@@ -57,7 +57,7 @@ Do replace `NewType` and `new_type` with corresponding values
 - [ ] Add `to_new_type` to other `Subber::File` files
 - [ ] Add `Subber::Formatted::NewType`
 - [ ] Add `Subber::Parser::NewType`
-- [ ] Update `Subber::File::Base#convert_to_other_type`
+- [ ] Update `Subber::File::Base#to_file_type`
 - [ ] Update `Subber::File.from_content`
 
 
