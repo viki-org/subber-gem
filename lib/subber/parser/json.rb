@@ -39,7 +39,8 @@ module Subber::Parser
         counter = raw_counter.to_i
 
         if counter <= 0 || counter.to_s != raw_counter.to_s
-          raise Subber::Errors::InvalidCounter
+          message = "#{raw_counter.inspect} is an invalid counter"
+          raise(Subber::Errors::InvalidCounter, message)
         end
 
         counter
@@ -48,8 +49,9 @@ module Subber::Parser
       def parse_timestamp(raw_timestamp)
         timestamp = raw_timestamp.to_i
 
-        if timestamp <= 0 || timestamp.to_s != raw_timestamp.to_s
-          raise Subber::Errors::InvalidTimestamp
+        if timestamp < 0 || timestamp.to_s != raw_timestamp.to_s
+          message = "#{raw_timestamp.inspect} is an invalid timestamp"
+          raise(Subber::Errors::InvalidTimestamp, message)
         end
 
         timestamp
