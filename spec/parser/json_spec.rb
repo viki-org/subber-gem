@@ -41,6 +41,38 @@ describe Subber::Parser::Json do
       end
     end
 
+    context 'missing content' do
+      let(:content) { read_fixture('json-sample-missing-content.json') }
+
+      it 'raises error' do
+        expect { subject }.to raise_error(Subber::Errors::InvalidContent)
+      end
+    end
+
+    context 'empty content' do
+      let(:content) { read_fixture('json-sample-empty-content.json') }
+
+      let(:expected_attribute_hashes) do
+        [
+          {
+            counter: 1,
+            start_time: 500,
+            end_time: 4000,
+            content: "\n\r"
+          }
+        ]
+      end
+
+      it 'generates subtitles based on the file content' do
+        subtitles = subject
+
+        subtitles.each_with_index do |subtitle, index|
+          attribute_hash = expected_attribute_hashes[index]
+          expect(subtitle).to have_attributes(attribute_hash)
+        end
+      end
+    end
+
     context 'valid content' do
       let(:content) { read_fixture('json-sample.json') }
       let(:expected_attribute_hashes) do

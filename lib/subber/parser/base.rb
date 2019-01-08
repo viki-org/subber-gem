@@ -6,7 +6,7 @@ module Subber::Parser
       # @param content [String]
       # @return [Array<Subber::Subtitle>]
       #
-      def parse(content)
+      def parse(_content)
         raise NotImplementedError
       end
     end

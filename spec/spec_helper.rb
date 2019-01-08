@@ -25,3 +25,8 @@ end
 def read_fixture(filename)
   open(File.join(File.expand_path('.'), 'spec', 'fixtures', filename)).read
 end
+
+def read_compact_json_fixture(filename)
+  json = open(File.join(File.expand_path('.'), 'spec', 'fixtures', filename)).read
+  JSON.parse(json).to_json
+end

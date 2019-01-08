@@ -1,7 +1,7 @@
 module Subber::Formatter
   class Vtt < Base
     LF_REGEX = /\n/
-    CRLF = "\r\n"
+    CRLF = "\r\n".freeze
 
     class << self
       # @param subtitles [Array<Subber::Subtitle>]
@@ -42,7 +42,7 @@ module Subber::Formatter
         cue = [
           build_counter(subtitle),
           build_time_range(subtitle),
-          build_content(subtitle),
+          build_content(subtitle)
         ].join("\n")
 
         "#{cue}\n\n"
@@ -77,7 +77,7 @@ module Subber::Formatter
       #
       def convert_ms_to_time(ms_time)
         seconds = ms_time / 1000.0
-        formatted_seconds_str = Time.at(seconds).utc.strftime("%H:%M:%S")
+        formatted_seconds_str = Time.at(seconds).utc.strftime('%H:%M:%S')
 
         # fix float precision
         #

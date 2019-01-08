@@ -4,7 +4,7 @@ module Subber::Formatter
       # @param subtitles [Array<Subber::Subtitle>]
       # @return [String]
       #
-      def format(subtitles)
+      def format(_subtitles)
         raise NotImplementedError
       end
     end

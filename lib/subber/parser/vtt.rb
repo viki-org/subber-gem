@@ -7,8 +7,8 @@ module Subber::Parser
 
     CUE_DELIMITER_REGEX = /\n\n/
     WINDOW_LINE_BREAK_REGEX = /\r/
-    BYTE_ORDER_MARK_STRING = "\xEF\xBB\xBF"
-    INVALID_CUE_START_STRINGS = %w(WEBVTT NOTE STYLE REGION)
+    BYTE_ORDER_MARK_STRING = "\xEF\xBB\xBF".freeze
+    INVALID_CUE_START_STRINGS = %w[WEBVTT NOTE STYLE REGION].freeze
 
     class << self
       # @param file_content [String]
