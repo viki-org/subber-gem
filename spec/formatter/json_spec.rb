@@ -21,7 +21,7 @@ describe Subber::Formatter::Json do
     end
 
     let(:subtitles) { [subtitle1, subtitle2] }
-    let(:expected_content) { read_fixture('json-sample.json') }
+    let(:expected_content) { read_compact_json_fixture('json-sample.json') }
 
     subject { described_class.format(subtitles) }
 
