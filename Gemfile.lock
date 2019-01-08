@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    subber (0.2.1)
+    subber (0.2.3)
 
 GEM
   remote: https://rubygems.org/

@@ -58,10 +58,7 @@ module Subber::Parser
       end
 
       def parse_content(content)
-        if content.to_s.strip.empty?
-          raise Subber::Errors::InvalidContent
-        end
-
+        raise Subber::Errors::InvalidContent if content.nil?
         content
       end
     end
