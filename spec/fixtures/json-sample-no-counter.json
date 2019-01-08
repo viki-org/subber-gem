@@ -1,1 +1,12 @@
-[{"start_time":500,"end_time":4000,"content":"this is a sample"},{"start_time":4099,"end_time":6000,"content":"subtitle for subber gem"}]
+[
+  {
+    "start_time":500,
+    "end_time":4000,
+    "content":"this is a sample"
+  },
+  {
+    "start_time":4099,
+    "end_time":6000,
+    "content":"subtitle for subber gem"
+  }
+]
