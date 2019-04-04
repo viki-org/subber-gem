@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    subber (0.2.3)
+    subber (0.3.0)
       nokogiri (~> 1)
 
 GEM
