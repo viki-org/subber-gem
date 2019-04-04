@@ -4,8 +4,6 @@ module Subber::Parser
   class Ttml < Base
     attr_reader :raw_content
 
-    CUE_CSS_PATH = 'body'.freeze
-
     class << self
       # @param  content [String]
       # @return [Array<Subber::Subtitle>]

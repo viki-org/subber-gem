@@ -15,7 +15,7 @@ module Subber::Formatter
           xml.tt(xmlns: XML_NAMESPACE) do
             xml.body do
               subtitles.each do |subtitle|
-                generate_subtitle_cue(subtitle, attach_to: xml)
+                generate_subtitle_cue(subtitle, insert_into: xml)
               end
             end
           end
@@ -26,11 +26,11 @@ module Subber::Formatter
 
       private
 
-      # @param  subtitle [Subtitle]
-      # @param  attach_to [XmlTag]
+      # @param  subtitle [Subber::Subtitle]
+      # @param  insert_into [Nokogiri::XML::Builder]
       #
-      def generate_subtitle_cue(subtitle, attach_to: nil)
-        xml = attach_to
+      def generate_subtitle_cue(subtitle, insert_into: nil)
+        xml = insert_into
 
         begin_str = format_milisecond(subtitle.start_time)
         end_str = format_milisecond(subtitle.end_time)
