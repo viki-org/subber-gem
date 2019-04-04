@@ -1,0 +1,64 @@
+steps:
+  ###
+  # BEGIN: Provisioning
+  ###
+
+  - id: retrieveBundlerTestCache
+    waitFor: ['-']
+    name: gcr.io/${PROJECT_ID}/retrieve:1.0.0
+    args: [$REPO_NAME, 'bundlerTestCache', '.bundler.test']
+
+  - id: retrieveTesterImage
+    waitFor: ['-']
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
+    entrypoint: bash
+
+  - id: completeProvisioning
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
+    waitFor:
+      - 'retrieveBundlerTestCache'
+      - 'retrieveTesterImage'
+    entrypoint: bash
+
+  ###
+  # BEGIN: Setup
+  ###
+
+  - id: updateTestBundler
+    waitFor: ['completeProvisioning']
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+          bundle config --local path .bundler.test
+          bundle install --jobs `nproc` --quiet
+
+  - id: cacheBundlerTestFiles
+    waitFor: ['updateTestBundler']
+    name: gcr.io/${PROJECT_ID}/cache:1.0.0
+    args: [$REPO_NAME, 'bundlerTestCache', '.bundler.test']
+
+  - id: completeTestSetup
+    waitFor:
+      - 'updateTestBundler'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
+    entrypoint: bash
+
+  ###
+  # BEGIN: Test
+  ###
+
+  - id: runRspec
+    waitFor: ['completeTestSetup']
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+          bundle config --local path .bundler.test
+          bundle exec rspec --format progress
+
+timeout: 1800s
+options:
+  machineType: 'N1_HIGHCPU_8'
