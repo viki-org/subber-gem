@@ -8,6 +8,8 @@ module Subber::File
         Subber::File::Vtt.from_content(content)
       when 'json'
         Subber::File::Json.from_content(content)
+      when 'ttml'
+        Subber::File::Ttml.from_content(content)
       else
         message = "#{format} is not a supported source subtitle format"
         raise(Subber::Errors::NotSupported, message)

@@ -6,6 +6,7 @@ module Subber::Errors
   class InvalidVttFormat < InvalidContent; end
   class InvalidSrtFormat < InvalidContent; end
   class InvalidJsonFormat < InvalidContent; end
+  class InvalidTtmlFormat < InvalidContent; end
 
   class InvalidCounter < InvalidContent; end
   class InvalidTimeRange < InvalidContent; end

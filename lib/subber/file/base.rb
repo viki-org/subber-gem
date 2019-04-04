@@ -79,6 +79,8 @@ module Subber::File
         to_json
       when 'vtt'
         to_vtt
+      when 'ttml'
+        to_ttml
       else
         message = "#{file_type} is not a supported file type"
         raise(Subber::Errors::NotSupported, message)
@@ -101,6 +103,12 @@ module Subber::File
     #
     def to_vtt
       Subber::File::Vtt.new(subtitles: subtitles)
+    end
+
+    # @return [Subber::File::Ttml]
+    #
+    def to_ttml
+      Subber::File::Ttml.new(subtitles: subtitles)
     end
 
     private

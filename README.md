@@ -65,6 +65,26 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## Changelog
+
+### `0.x.x`
+
+#### `0.3.x`
+
+- `0.3.0`: Add support for Timed Text Markup Language (TTML)
+
+#### `0.2.x`
+
+- `0.2.3`: Only reject json subtitle if content is nil
+- `0.2.2`: Fix timestamp parser + Add error message
+- `0.2.1`: Fix missing counter issue
+- `0.2.0`: Add support for json + Introduce generic interfaces for files and parsers
+
+#### `0.1.x`
+
+- `0.1.0`: Add support for vtt and srt
+
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/viki-org/subber-gem. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
