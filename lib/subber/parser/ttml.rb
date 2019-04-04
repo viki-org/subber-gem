@@ -49,7 +49,7 @@ module Subber::Parser
       # @return [Integer] duration in milisecond
       #
       def parse_milisecond(time_string)
-        regex = /(\d+)(\w+)/
+        regex = /^(\d+)(\w+)$/
         match_data = time_string.match(regex)
 
         message = "#{time_string} is not a valid timestamp"
