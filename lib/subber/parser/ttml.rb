@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Subber::Parser
   class Ttml < Base
     attr_reader :raw_content

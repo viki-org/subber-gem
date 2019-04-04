@@ -36,5 +36,5 @@ Gem::Specification.new do |spec|
 
   # XML parser and builder
   #
-  spec.add_dependency "nokogiri"
+  spec.add_dependency "nokogiri", "~> 1"
 end
