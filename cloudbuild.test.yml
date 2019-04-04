@@ -32,14 +32,12 @@ steps:
       - '-c'
       - |
           bundle config --local path .bundler.test
-          bundle install --jobs `nproc` --with test --without staging production --quiet
+          bundle install --jobs `nproc` --quiet
 
   - id: cacheBundlerTestFiles
     waitFor: ['updateTestBundler']
     name: gcr.io/${PROJECT_ID}/cache:1.0.0
     args: [$REPO_NAME, 'bundlerTestCache', '.bundler.test']
-
-
 
   - id: completeTestSetup
     waitFor:
@@ -55,11 +53,11 @@ steps:
     waitFor: ['completeTestSetup']
     name: 'gcr.io/${PROJECT_ID}/ruby:2.1'
     entrypoint: bash
-    env:
-      - 'RAILS_ENV=test'
     args:
       - '-c'
-      - 'bundle exec rspec --format progress'
+      - |
+          bundle config --local path .bundler.test
+          bundle exec rspec --format progress
 
 timeout: 1800s
 options:
