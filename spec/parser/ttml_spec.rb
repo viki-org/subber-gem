@@ -4,6 +4,22 @@ describe Subber::Parser::Ttml do
   describe '.parse' do
     subject { described_class.parse(content) }
 
+    context 'invalid content' do
+      let(:content) { read_fixture('srt-sample.srt') }
+
+      it 'raises error' do
+        expect { subject }.to raise_error(Subber::Errors::InvalidTtmlFormat)
+      end
+    end
+
+    context 'invalid timestamp' do
+      let(:content) { read_fixture('ttml-sample-invalid-timestamp.xml') }
+
+      it 'raises error' do
+        expect { subject }.to raise_error(Subber::Errors::InvalidTimestamp)
+      end
+    end
+
     context 'valid content' do
       let(:content) { read_fixture('ttml-sample.xml') }
       let(:expected_attribute_hashes) do

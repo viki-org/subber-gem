@@ -13,6 +13,10 @@ module Subber::Parser
 
         cue_elements = doc.css('body > div, body > p')
 
+        if cue_elements.empty?
+          raise(Subber::Errors::InvalidTtmlFormat, 'no valid subtitle')
+        end
+
         cue_elements.each_with_index.map do |cue_element, index|
           counter = index + 1
           convert_xml_element_to_subtitle(cue_element, counter)
