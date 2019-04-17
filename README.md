@@ -71,6 +71,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 #### `0.3.x`
 
+- `0.3.1`: Allow subtitle in json file to have `nil` content
 - `0.3.0`: Add support for Timed Text Markup Language (TTML)
 
 #### `0.2.x`

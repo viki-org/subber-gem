@@ -58,7 +58,6 @@ module Subber::Parser
       end
 
       def parse_content(content)
-        raise Subber::Errors::InvalidContent if content.nil?
         content.to_s
       end
     end
