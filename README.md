@@ -71,6 +71,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 #### `0.3.x`
 
+- `0.3.2`: [Security Patch] Upgrade `nokogiri` to `1.10.4` + Add `2.3` as minimum ruby verison requirement
 - `0.3.1`: Allow subtitle in json file to have `nil` content
 - `0.3.0`: Add support for Timed Text Markup Language (TTML)
 
