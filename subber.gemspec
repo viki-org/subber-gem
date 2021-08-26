@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/viki-org/subber-gem"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = '>= 2.3'
+  spec.required_ruby_version = '>= 2.5'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -39,5 +39,5 @@ Gem::Specification.new do |spec|
 
   # XML parser and builder
   #
-  spec.add_dependency "nokogiri", "~> 1.10.4"
+  spec.add_dependency "nokogiri", "~> 1.12.3"
 end
