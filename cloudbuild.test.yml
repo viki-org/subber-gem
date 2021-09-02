@@ -10,11 +10,11 @@ steps:
 
   - id: retrieveTesterImage
     waitFor: ['-']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.3'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
     entrypoint: bash
 
   - id: completeProvisioning
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.3'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
     waitFor:
       - 'retrieveBundlerTestCache'
       - 'retrieveTesterImage'
@@ -26,7 +26,7 @@ steps:
 
   - id: updateTestBundler
     waitFor: ['completeProvisioning']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.3'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
     entrypoint: bash
     args:
       - '-c'
@@ -42,7 +42,7 @@ steps:
   - id: completeTestSetup
     waitFor:
       - 'updateTestBundler'
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.3'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
     entrypoint: bash
 
   ###
@@ -51,7 +51,7 @@ steps:
 
   - id: runRspec
     waitFor: ['completeTestSetup']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.3'
+    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
     entrypoint: bash
     args:
       - '-c'
