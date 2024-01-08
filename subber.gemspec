@@ -39,5 +39,5 @@ Gem::Specification.new do |spec|
 
   # XML parser and builder
   #
-  spec.add_dependency "nokogiri", "~> 1.12.3"
+  spec.add_dependency "nokogiri", ">= 1.15"
 end
