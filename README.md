@@ -45,6 +45,11 @@ srt_file.export("pass local path here")
 #
 vtt_file = srt_file.to_vtt
 srt_file = vtt_file.to_srt
+
+# Add WebVTT cue settings to every cue (Vtt only, optional)
+#
+srt_file.to_vtt(cue_settings: 'position:50% align:center line:70%,end').content
+srt_file.to_file_type('vtt', cue_settings: 'line:70%').content
 ```
 
 ## Development

@@ -115,4 +115,35 @@ describe Subber::File::Base do
       subject
     end
   end
+
+  describe '#to_file_type' do
+    let(:subtitles) do
+      [Subber::Subtitle.new(counter: 1, start_time: 500, end_time: 4000, content: 'hello')]
+    end
+
+    it 'builds a vtt file without cue settings by default' do
+      vtt_file = file.to_file_type('vtt')
+
+      expect(vtt_file).to be_a(Subber::File::Vtt)
+      expect(vtt_file.cue_settings).to be_nil
+      expect(vtt_file.content).not_to include('line:')
+    end
+
+    it 'passes cue settings to the vtt file' do
+      expect(file.to_file_type('vtt', cue_settings: 'line:70%').content)
+        .to include('00:00:00.500 --> 00:00:04.000 line:70%')
+    end
+
+    %w[srt json ttml].each do |other_type|
+      it "ignores cue settings for #{other_type}" do
+        expect(file.to_file_type(other_type, cue_settings: 'line:70%').content)
+          .to eq(file.to_file_type(other_type).content)
+      end
+    end
+
+    it 'still raises for unsupported types' do
+      expect { file.to_file_type('foo', cue_settings: 'line:70%') }
+        .to raise_error(Subber::Errors::NotSupported)
+    end
+  end
 end
