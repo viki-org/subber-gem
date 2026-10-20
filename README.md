@@ -74,6 +74,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ### `0.x.x`
 
+#### `0.4.x`
+
+- `0.4.0`: Add optional WebVTT `cue_settings` when formatting (`to_vtt`, `to_file_type`) + Parse VTT cues that have cue settings on the timing line (settings are discarded)
+
 #### `0.3.x`
 
 - `0.3.3`: [Security Patch] Upgrade `nokogiri` to `1.12.3` + Add `2.5` as minimum ruby verison requirement
