@@ -45,6 +45,11 @@ srt_file.export("pass local path here")
 #
 vtt_file = srt_file.to_vtt
 srt_file = vtt_file.to_srt
+
+# Add WebVTT cue settings to every cue (Vtt only, optional)
+#
+srt_file.to_vtt(cue_settings: 'position:50% align:center line:70%,end').content
+srt_file.to_file_type('vtt', cue_settings: 'line:70%').content
 ```
 
 ## Development
@@ -68,6 +73,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Changelog
 
 ### `0.x.x`
+
+#### `0.4.x`
+
+- `0.4.0`: Add optional WebVTT `cue_settings` when formatting (`to_vtt`, `to_file_type`) + Parse VTT cues that have cue settings on the timing line (settings are discarded)
 
 #### `0.3.x`
 

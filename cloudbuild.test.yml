@@ -10,11 +10,11 @@ steps:
 
   - id: retrieveTesterImage
     waitFor: ['-']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
+    name: 'gcr.io/${PROJECT_ID}/base/${_RUBY_IMAGE}'
     entrypoint: bash
 
   - id: completeProvisioning
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
+    name: 'gcr.io/${PROJECT_ID}/base/${_RUBY_IMAGE}'
     waitFor:
       - 'retrieveBundlerTestCache'
       - 'retrieveTesterImage'
@@ -26,11 +26,12 @@ steps:
 
   - id: updateTestBundler
     waitFor: ['completeProvisioning']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
+    name: 'gcr.io/${PROJECT_ID}/base/${_RUBY_IMAGE}'
     entrypoint: bash
     args:
       - '-c'
       - |
+          gem install bundler -v 1.17.3 --no-document
           bundle config --local path .bundler.test
           bundle install --jobs `nproc` --quiet
 
@@ -42,7 +43,7 @@ steps:
   - id: completeTestSetup
     waitFor:
       - 'updateTestBundler'
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
+    name: 'gcr.io/${PROJECT_ID}/base/${_RUBY_IMAGE}'
     entrypoint: bash
 
   ###
@@ -51,14 +52,19 @@ steps:
 
   - id: runRspec
     waitFor: ['completeTestSetup']
-    name: 'gcr.io/${PROJECT_ID}/ruby:2.5'
+    name: 'gcr.io/${PROJECT_ID}/base/${_RUBY_IMAGE}'
     entrypoint: bash
     args:
       - '-c'
       - |
+          gem install bundler -v 1.17.3 --no-document
           bundle config --local path .bundler.test
           bundle exec rspec --format progress
 
 timeout: 1800s
+
+substitutions:
+  _RUBY_IMAGE: 'ruby:2.7-debian-5'
+
 options:
   machineType: 'N1_HIGHCPU_8'

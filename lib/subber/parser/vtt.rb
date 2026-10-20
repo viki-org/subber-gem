@@ -1,6 +1,9 @@
 module Subber::Parser
   class Vtt < Base
-    SUBTITLE_REGEX = /(\d*)\n?(^\d{0,2}:?\d{2}:\d{2}\.\d{3}\s-->\s\d{0,2}:?\d{2}:\d{2}\.\d{3}$)\n?(.*)/m
+    # Optional cue settings after the end timestamp (e.g. "position:50% line:70%,end") are accepted
+    # but discarded, as Subber::Subtitle has no field for them.
+    CUE_SETTINGS_REGEX = /(?:[ \t]+\S[^\n]*)?/
+    SUBTITLE_REGEX = /(\d*)\n?(^\d{0,2}:?\d{2}:\d{2}\.\d{3}\s-->\s\d{0,2}:?\d{2}:\d{2}\.\d{3})#{CUE_SETTINGS_REGEX}$\n?(.*)/m
     COUNTER_REGEX = /\d+/
     TIME_RANGE_REGEX = /(^\d{0,2}:?\d{2}:\d{2}\.\d{3})\s-->\s(\d{0,2}:?\d{2}:\d{2}\.\d{3}$)/
     TIMECODE_REGEX = /(^\d{0,2}):?(\d{2}):(\d{2})\.(\d{3})/

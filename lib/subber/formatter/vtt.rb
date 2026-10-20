@@ -5,12 +5,16 @@ module Subber::Formatter
 
     class << self
       # @param subtitles [Array<Subber::Subtitle>]
+      # @param cue_settings [String, nil] WebVTT cue settings appended to every cue timing line,
+      #   e.g. 'position:50% align:center line:70%,end'. Output is unchanged when blank.
       # @return [String]
       #
-      def format(subtitles)
+      def format(subtitles, cue_settings: nil)
+        settings = cue_settings.to_s.strip
+
         cues =
           subtitles.map do |subtitle|
-            convert_subtitle_to_cue(subtitle)
+            convert_subtitle_to_cue(subtitle, settings)
           end
 
         file_content = cues.join
@@ -36,12 +40,13 @@ module Subber::Formatter
       end
 
       # @param subtitle [Subber::Subtitle]
+      # @param settings [String]
       # @return [String]
       #
-      def convert_subtitle_to_cue(subtitle)
+      def convert_subtitle_to_cue(subtitle, settings)
         cue = [
           build_counter(subtitle),
-          build_time_range(subtitle),
+          build_time_range(subtitle, settings),
           build_content(subtitle)
         ].join("\n")
 
@@ -56,13 +61,15 @@ module Subber::Formatter
       end
 
       # @param subtitle [Subber::Subtitle]
+      # @param settings [String]
       # @return [String]
       #
-      def build_time_range(subtitle)
+      def build_time_range(subtitle, settings)
         start_time = convert_ms_to_time(subtitle.start_time)
         end_time = convert_ms_to_time(subtitle.end_time)
+        time_range = "#{start_time} --> #{end_time}"
 
-        "#{start_time} --> #{end_time}"
+        settings.empty? ? time_range : "#{time_range} #{settings}"
       end
 
       # @param subtitle [Subber::Subtitle]

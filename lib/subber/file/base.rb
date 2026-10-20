@@ -71,14 +71,17 @@ module Subber::File
       subtitles.each { |subtitle| subtitle.shift!(ms) }
     end
 
-    def to_file_type(file_type)
+    # @param file_type [String] 'srt', 'json', 'vtt' or 'ttml'
+    # @param cue_settings [String, nil] WebVTT cue settings, only applied when file_type is 'vtt'
+    #
+    def to_file_type(file_type, cue_settings: nil)
       case file_type
       when 'srt'
         to_srt
       when 'json'
         to_json
       when 'vtt'
-        to_vtt
+        cue_settings.nil? ? to_vtt : to_vtt(cue_settings: cue_settings)
       when 'ttml'
         to_ttml
       else
@@ -99,10 +102,13 @@ module Subber::File
       Subber::File::Srt.new(subtitles: subtitles)
     end
 
+    # @param cue_settings [String, nil] see Subber::Formatter::Vtt.format
     # @return [Subber::File::Vtt]
     #
-    def to_vtt
-      Subber::File::Vtt.new(subtitles: subtitles)
+    def to_vtt(cue_settings: nil)
+      return Subber::File::Vtt.new(subtitles: subtitles) if cue_settings.nil?
+
+      Subber::File::Vtt.new(subtitles: subtitles, cue_settings: cue_settings)
     end
 
     # @return [Subber::File::Ttml]
