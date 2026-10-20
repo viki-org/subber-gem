@@ -19,6 +19,14 @@ module Subber::File
       @content ||= cue_settings.nil? ? formatter.format(subtitles) : formatter.format(subtitles, cue_settings: cue_settings)
     end
 
+    # @param cue_settings [String, nil] nil keeps this file's cue settings; any other value
+    #   replaces them (use '' to clear)
+    # @return [Subber::File::Vtt]
+    #
+    def to_vtt(cue_settings: nil)
+      super(cue_settings: cue_settings.nil? ? self.cue_settings : cue_settings)
+    end
+
     # @param ms [Integer] Can be both positive and negative
     # @return [Subber::File::Vtt] return a new copy with shifted subtitles, keeping the cue settings
     #

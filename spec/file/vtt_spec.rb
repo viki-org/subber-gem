@@ -45,4 +45,40 @@ describe Subber::File::Vtt do
       expect(vtt_file.shift(1000).cue_settings).to be_nil
     end
   end
+
+  describe '#to_vtt' do
+    let(:subtitles) { [Subber::Subtitle.new(counter: 1, start_time: 500, end_time: 4000, content: 'hello')] }
+    let(:timing) { '00:00:00.500 --> 00:00:04.000' }
+    let(:file_with_settings) { Subber::File::Vtt.new(subtitles: subtitles, cue_settings: 'line:70%') }
+
+    it 'keeps its own cue settings by default' do
+      expect(file_with_settings.to_vtt.content).to include("#{timing} line:70%")
+    end
+
+    it 'replaces its cue settings when given new ones' do
+      expect(file_with_settings.to_vtt(cue_settings: 'align:start').content)
+        .to include("#{timing} align:start")
+    end
+
+    it 'clears its cue settings when given an empty string' do
+      content = file_with_settings.to_vtt(cue_settings: '').content
+
+      expect(content).to include("#{timing}\r\n")
+      expect(content).not_to include('line:70%')
+    end
+
+    it 'has no cue settings when it had none' do
+      expect(vtt_file.to_vtt.cue_settings).to be_nil
+      expect(vtt_file.to_vtt.content).to include("#{timing}\r\n")
+    end
+
+    it 'applies given cue settings when it had none' do
+      expect(vtt_file.to_vtt(cue_settings: 'line:70%').content).to include("#{timing} line:70%")
+    end
+
+    it 'is used by to_file_type' do
+      expect(file_with_settings.to_file_type('vtt').content).to include("#{timing} line:70%")
+      expect(file_with_settings.to_file_type('vtt', cue_settings: '').content).to include("#{timing}\r\n")
+    end
+  end
 end
